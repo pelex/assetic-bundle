@@ -68,7 +68,7 @@ class AsseticTokenParser extends BaseAsseticTokenParser
         return new AsseticNode($asset, $body, $inputs, $filters, $name, $attributes, $lineno, $tag);
     }
 
-    protected function createNode(AssetInterface $asset, \Twig_Node $body, array $inputs, array $filters, $name, array $attributes = array(), $lineno = 0, $tag = null)
+    protected function createNode(AssetInterface $asset, \Twig_NodeInterface $body, array $inputs, array $filters, $name, array $attributes = array(), $lineno = 0, $tag = null)
     {
         return new AsseticNode($asset, $body, $inputs, $filters, $name, $attributes, $lineno, $tag);
     }
