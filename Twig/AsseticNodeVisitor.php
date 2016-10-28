@@ -12,7 +12,9 @@
 namespace Symfony\Bundle\AsseticBundle\Twig;
 
 use Assetic\Extension\Twig\AsseticFilterFunction;
+use Assetic\Extension\Twig\AsseticFilterInvoker;
 use Symfony\Bundle\AsseticBundle\Exception\InvalidBundleException;
+use Symfony\Bundle\AsseticBundle\Factory\AssetFactory;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\Templating\TemplateNameParserInterface;
 
@@ -93,7 +95,11 @@ class AsseticNodeVisitor extends \Twig_BaseNodeVisitor
                     $arguments[] = eval('return '.$env->compile($argument).';');
                 }
 
-                $invoker = $env->getExtension('assetic')->getFilterInvoker($name);
+                /** @var AsseticExtension $assetic */
+                $assetic = $env->getExtension('assetic');
+                /** @var AsseticFilterInvoker $invoker */
+                $invoker = $assetic->getFilterInvoker($name);
+                /** @var AssetFactory $factory */
                 $factory = $invoker->getFactory();
 
                 $inputs = isset($arguments[0]) ? (array) $arguments[0] : array();
@@ -107,6 +113,8 @@ class AsseticNodeVisitor extends \Twig_BaseNodeVisitor
                 return array($inputs, $filters, $options);
             }
         }
+
+        return null;
     }
 
     public function getPriority()
