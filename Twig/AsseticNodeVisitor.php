@@ -44,14 +44,14 @@ class AsseticNodeVisitor extends \Twig_BaseNodeVisitor
         }
 
         // check the bundle
-        $templateRef = $this->templateNameParser->parse($env->getParser()->getStream()->getFilename());
+        $templateRef = $this->templateNameParser->parse((new \Twig_Parser($env))->getStream()->getSourceContext()->getPath());
         $bundle = $templateRef instanceof TemplateReference ? $templateRef->get('bundle') : null;
         if ($bundle && !in_array($bundle, $this->enabledBundles)) {
             throw new InvalidBundleException($bundle, "the $name() function", $templateRef->getLogicalName(), $this->enabledBundles);
         }
 
         list($input, $filters, $options) = $formula;
-        $line = $node->getLine();
+        $line = $node->getTemplateLine();
 
         // check context and call either asset() or path()
         return new \Twig_Node_Expression_Conditional(
